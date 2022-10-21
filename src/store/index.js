@@ -4,9 +4,13 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
+  state: {
+    tabBarHeight: 0,
+  },
   getters: {},
-  mutations: {},
+  mutations: {
+    setTabBarHeight: (state, height) => (state.tabBarHeight = height), // 将tabBarHeight存在vuex中
+  },
   actions: {},
   modules: {}
 });

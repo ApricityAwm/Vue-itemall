@@ -4,6 +4,8 @@ import router from './router';
 import store from './store';
 
 import './plugins';
+import './assets/style/base.css';
+import './assets/font/iconfont.css';
 
 Vue.config.productionTip = false;
 
