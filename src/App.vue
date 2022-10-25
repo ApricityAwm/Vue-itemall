@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import { mapState, mapMutations} from 'vuex'
-import TabBar from '@/components/tab-bar'
+import { mapState, mapMutations} from 'vuex';
+import TabBar from '@/components/tab-bar';
 
 export default {
   components: { TabBar, },

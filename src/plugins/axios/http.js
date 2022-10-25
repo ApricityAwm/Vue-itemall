@@ -17,7 +17,7 @@ export default class {
       (config) => {
         if(config.loading) {
           this.loading = Toast.loading({
-            message: '加载中...', 
+            message: '加载中...',
             forbidClick: true, // 禁止点击
             duration: 0, //持续时间 0 为不自动关闭
           });
@@ -68,14 +68,14 @@ export default class {
         message = '服务器内部出错';
         break;
       default:
-        message = '位置错误';
+        message = '未知错误';
         break;
     }
     Toast.fail(message)
   }
   /** get请求 */
-  get(config) {
-    return this.axiosInstance.request({ method: 'GET', ...config});
+  get(url,config) {
+    return this.axiosInstance.request({ method: 'GET', url, ...config});
   };
   /** post请求 */
   post(config) {
