@@ -1,5 +1,7 @@
 <template>
-  <div class="waterfall-item"></div>
+  <div class="waterfall-item">
+    <slot></slot>
+  </div>
 </template>
 
 <script>

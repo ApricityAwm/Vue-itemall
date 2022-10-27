@@ -28,7 +28,6 @@ export default {
 
 <style lang="less" scoped>
 .tab {
-  margin-top: 10px;
   height: 40px;
   display: flex;
   align-items: center;

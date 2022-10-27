@@ -12,6 +12,7 @@ export default {
 
 <style lang="less" scoped>
 .feature {
+  margin-bottom: 10px;
   font-size: 0;
   img {
     width: 100%;

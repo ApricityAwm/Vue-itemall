@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <div :style="{marginBottom: tabBarHeight + 'px'}">
+    <div :style="{ height: `calc(100vh -${tabBarHeight}px)`}">
       <router-view></router-view>
     </div>
-    <tab-bar ref="tabBarRef"/>
+    <tab-bar ref="tabBarRef" v-if="!$route.meta.hideTabbar" />
   </div>
 </template>
 
