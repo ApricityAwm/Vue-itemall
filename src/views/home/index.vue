@@ -31,10 +31,10 @@
     </van-sticky>
     <waterfall>
       <waterfall-item>
-        <goods v-for="item in goods[type].leftList" :key="item.id" :item="item" @click="handelLinkDetail(item.iid, id)"/>
+        <goods v-for="item in goods[type].leftList" :key="item.id" :item="item" @click.native="handelLinkDetail(item.iid, item.id)"/>
       </waterfall-item>
       <waterfall-item>
-        <goods v-for="item in goods[type].rightList" :key="item.id" :item="item" @click="handelLinkDetail(item.iid, id)"/>
+        <goods v-for="item in goods[type].rightList" :key="item.id" :item="item" @click.native="handelLinkDetail(item.iid, item.id)"/>
       </waterfall-item>
     </waterfall>
     <div class="loading">
@@ -138,7 +138,8 @@ export default {
     },
     /** 跳转至商品详情页 */
     handelLinkDetail(iid, id) {
-      this.$route.push({name: 'detail', query: { iid, id } } )
+      // 根据路由实例导航至name = detail 的相关页面  在通过路由将绑定的相关商品id iid 传过去
+      this.$router.push({name: 'detail', query: { iid, id } } )
     }
   }
 }

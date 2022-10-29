@@ -13,6 +13,15 @@ const routes = [
     }
   },
   {
+    name: 'detail',
+    path: '/detail',
+    component: () => import('@/views/detail'),
+     meta: {
+      title: '商品详情',
+      hideTabbar: true,
+    }
+  },
+  {
     name: 'category',
     path: '/category',
     component: () => import('@/views/category'),
