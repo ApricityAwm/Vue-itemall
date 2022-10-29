@@ -31,10 +31,10 @@
     </van-sticky>
     <waterfall>
       <waterfall-item>
-        <goods v-for="item in goods[type].leftList" :key="item.id" :item="item" />
+        <goods v-for="item in goods[type].leftList" :key="item.id" :item="item" @click="handelLinkDetail(item.iid, id)"/>
       </waterfall-item>
       <waterfall-item>
-        <goods v-for="item in goods[type].rightList" :key="item.id" :item="item" />
+        <goods v-for="item in goods[type].rightList" :key="item.id" :item="item" @click="handelLinkDetail(item.iid, id)"/>
       </waterfall-item>
     </waterfall>
     <div class="loading">
@@ -135,6 +135,10 @@ export default {
     backTop() {
       // 缓慢滚动至顶部 scrollIntoView 专用于滚动到开始位置或结束位置的API
       document.documentElement.scrollIntoView({ behavior: 'smooth', block: 'start'});
+    },
+    /** 跳转至商品详情页 */
+    handelLinkDetail(iid, id) {
+      this.$route.push({name: 'detail', query: { iid, id } } )
     }
   }
 }

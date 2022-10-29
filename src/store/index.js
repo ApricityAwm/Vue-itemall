@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+// vuex的的永久缓存插件
+import createPersistedState from 'vuex-persistedstate'
 
 import { login, getUserInfo } from '@/api';
 import router from '@/router';
@@ -11,6 +13,7 @@ export default new Vuex.Store({
   state: {
     tabBarHeight: 0,
     token: '',
+    userInfo: {},
   },
   getters: {},
   mutations: {
@@ -37,5 +40,11 @@ export default new Vuex.Store({
 
     }
   },
-  modules: {}
+  modules: {},
+  plugins: [
+    createPersistedState({
+      storage: window.localStorage,
+      key: 'store',
+    })
+  ]
 });
