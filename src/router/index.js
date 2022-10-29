@@ -45,6 +45,15 @@ const routes = [
       hideTabbar: true,
     }
   },
+  {
+    name: 'login',
+    path: '/login',
+    component: () => import('@/views/login'),
+    meta: {
+      title: '登录',
+      hideTabbar: true,
+    }
+  },
 ];
 
 const router = new VueRouter({

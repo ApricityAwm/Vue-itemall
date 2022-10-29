@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { Toast } from 'vant';
+import store from '@/store';
+// import router from '@/router';
 
 export default class {
   constructor(config) {
@@ -22,6 +24,8 @@ export default class {
             duration: 0, //持续时间 0 为不自动关闭
           });
         }
+        // 请求头添加token
+        config.headers.Authorization = 'Bearer '+ store.state.token;
         return config;
       },
       (error) => Promise.reject(error),
@@ -31,7 +35,10 @@ export default class {
   responceInterceptor() {
     this.axiosInstance.interceptors.response.use(
       (response) => this.handleResponse(response.data),
-      (error) => this.handleError(error.response),
+      (error) => {
+        console.log(error);
+        return this.handleError(error.response);
+      }
     )
   };
   /**  处理响应数据 */
@@ -41,11 +48,12 @@ export default class {
 
     if(code === 200) {
       // 提示信息
-      return message ?  Toast.success('成功文案') : data;
+      return message ?  Toast.success(message) : data;
     }
 
     // 错误处理  提示错误信息
-    Toast.fail('失败文案');
+    Toast.fail(message);
+    return Promise.reject(message)
   };
   /** 处理错误响应 */
   handleError( error) {
