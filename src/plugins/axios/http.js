@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Toast } from 'vant';
 import store from '@/store';
-// import router from '@/router';
+import router from '@/router';
 
 export default class {
   constructor(config) {
@@ -51,6 +51,10 @@ export default class {
       return message ?  Toast.success(message) : data;
     }
 
+    if(code === 401 || code === 401) {
+      // 跳转登录页
+        router.replace('/login');
+    };
     // 错误处理  提示错误信息
     Toast.fail(message);
     return Promise.reject(message)
@@ -68,6 +72,12 @@ export default class {
       case 401:
         message = '未授权,请登录';
         // 跳转登录页
+        router.replace('/login');
+        break;
+      case 403:
+        message = '未授权,请登录';
+        // 跳转登录页
+        router.replace('/login');
         break;
       case 404:
         message = '请求地址出错';
