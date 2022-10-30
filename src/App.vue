@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <div :style="{ height: `calc(100vh -${tabBarHeight}px)`}">
-      <router-view></router-view>
+      <keep-alive>
+        <router-view v-if="$route.meta.keepAlive" />
+      </keep-alive>
+      <router-view v-if="!$route.meta.keepAlive" />
     </div>
     <tab-bar ref="tabBarRef" v-if="!$route.meta.hideTabbar" />
   </div>

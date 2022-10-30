@@ -14,6 +14,7 @@ export default {
 
 <style lang="less" scoped>
 .nav-bar {
+  width: 100%;
   height: 44px;
   display: flex;
   align-items: center;

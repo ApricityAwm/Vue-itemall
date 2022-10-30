@@ -10,6 +10,7 @@ const routes = [
     component: () => import('@/views/home'),
      meta: {
       title: '首页',
+      keepAlive: true,
     }
   },
   {
@@ -27,6 +28,7 @@ const routes = [
     component: () => import('@/views/category'),
      meta: {
       title: '分类',
+      keepAlive: true,
     }
   },
   {
