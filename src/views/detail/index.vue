@@ -78,8 +78,8 @@
       <van-sku
         v-model="show"
         :sku="sku"
+        :goods-id="gid"
         :goods="goods"
-        :goods-id="1"
         @buy-clicked="handelBuy"
         @add-cart="handelAddCart"
       >
@@ -111,7 +111,7 @@
 </template>
 
 <script>
-import { queryGoodsDetail } from '@/api';
+import { queryGoodsDetail, addCarts } from '@/api';
 import NavBar from '@/components/nav-bar';
 import GoodsInfo from './components/goods-info';
 import GoodsOption from './components/goods-option';
@@ -122,13 +122,15 @@ export default {
   components: { NavBar, GoodsInfo, GoodsOption, GoodsShop, GoodsDetail },
   data() {
     return {
-      goodsDetail: {},
-      currentIndex: 0,
-      isLoading: false,
-      swipeHeight: 0,
-      goodsDetailOffsetTop: 0,
-      scrollTop: 0,
-      show: false,
+      gid: '', // 商品id
+      goodsDetail: {}, //
+      currentIndex: 0, // 当前轮播图的索引
+      isLoading: false, // 是否加载完成
+      swipeHeight: 0, // 轮播图高度
+      goodsDetailOffsetTop: 0, // 详情页距顶部的距离
+      scrollTop: 0, // 页面滚动的高度
+      show: false, // 是否展示sku
+      // sku的规格
       sku: {
         tree: [],
         // 所有 sku 的组合列表，比如红色、M 码为一个 sku 组合，红色、S 码为另一个组合
@@ -146,7 +148,9 @@ export default {
     };
   },
   mounted() {
-    const { iid } = this.$route.query; // 通过路由获取查询商品详情的参数
+    const { iid, id } = this.$route.query; // 通过路由获取查询商品详情的参数
+
+    this.gid = id;
     this.queryGoodsDetail(iid);
     this.scroll();
   },
@@ -179,17 +183,20 @@ export default {
     back() {
       this.$router.back(1);
     },
-    /**  */
+    /** 监听页面滚动高度 */
     scroll() {
       window.addEventListener('scroll', () => {
         this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
       });
     },
+    /** 购买 */
     handelBuy(data) {
       console.log('立即购买', data);
     },
-    handelAddCart(data) {
-      console.log('加入购物车', data);
+    /** 添加购物车 */
+    async handelAddCart({ goodsId, selectedNum }) {
+      await addCarts({ gid: goodsId, num: selectedNum });
+      this.show = false;
     },
   },
 };
