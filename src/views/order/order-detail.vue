@@ -3,7 +3,7 @@
     <div class="nav">
       <nav-bar class="nav-bar">
         <template #left>
-          <i class="iconfont icon-fanhui"></i>
+          <i class="iconfont icon-fanhui" @click="back"></i>
         </template>
         <template #center>订单详情</template>
         <template #right>
@@ -19,16 +19,30 @@
         :tel="currentContact.tel"
       />
       <div class="detail">
-        <template v-for="item in goodsList">
-          <van-card
-            :key="item.id"
-            :num="item.num"
-            :price="item.price.toFixed(2)"
-            :desc="item.title"
-            :thumb="item.show.img"
-          />
+        <template v-if="goodsList.length > 0">
+          <template v-for="item in goodsList">
+            <van-card
+              :key="item.id"
+              :num="item.num"
+              :price="item.price.toFixed(2)"
+              :desc="item.title"
+              :thumb="item.show.img"
+            />
+          </template>
         </template>
-        <div class="total">实付金额：{{ total }}</div>
+        <template v-else>
+          <template v-for="item in order.desc">
+            <van-card
+              :key="item.id"
+              :num="item.num"
+              :price="item.price.toFixed(2)"
+              :desc="item.title"
+              :thumb="item.img"
+            />
+          </template>
+        </template>
+
+        <div class="total">实付金额：{{ order.totalPrice.toFixed(2) || total }}</div>
       </div>
     </div>
     <div class="submit-bar">
@@ -41,7 +55,7 @@
 </template>
 
 <script>
-import { queryGoodsById, addOrder } from '@/api';
+import { queryGoodsById, addOrder, queryOrderById } from '@/api';
 import NavBar from '@/components/nav-bar';
 export default {
   components: { NavBar },
@@ -49,6 +63,7 @@ export default {
     return {
       info: [],
       goodsList: [],
+      order: {},
       currentContact: {
         name: '张三',
         tel: '13000000000',
@@ -56,9 +71,12 @@ export default {
     };
   },
   mounted() {
-    const { info } = this.$route.query;
+    const { info, id } = this.$route.query;
     if (info) {
       this.info = JSON.parse(info);
+    }
+    if (id) {
+      this.queryOrderById(id);
     }
 
     this.queryGoods();
@@ -70,8 +88,8 @@ export default {
   },
   methods: {
     /*返回 */
-    handelBack() {
-      this.$router.back();
+    back() {
+      this.$router.replace({ name: 'cart' });
     },
     /** 查询商品 */
     async queryGoods() {
@@ -85,7 +103,11 @@ export default {
     /** 添加订单 */
     async addOrder() {
       await addOrder({ address: '西安市雁塔区网星软件', info: this.info });
-      this.$router.replace({ name: '/order' });
+      this.$router.replace({ name: 'order' });
+    },
+    /** 根据订单id查询 */
+    async queryOrderById(id) {
+      this.order = await queryOrderById(id);
     },
   },
 };
