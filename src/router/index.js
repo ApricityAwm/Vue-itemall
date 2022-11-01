@@ -74,6 +74,15 @@ const routes = [
       hideTabbar: true,
     }
   },
+  {
+    name: 'order',
+    path: '/order',
+    component: () => import('@/views/order/order'),
+    meta: {
+      title: '订单列表',
+      hideTabbar: true,
+    }
+  },
 ];
 
 const router = new VueRouter({

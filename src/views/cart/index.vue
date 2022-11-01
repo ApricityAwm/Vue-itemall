@@ -172,7 +172,8 @@ export default {
       const info = this.carts
         .filter((el) => this.selectIds.includes(el.id))
         .map(({ num, goods }) => ({ num, gid: goods.id }));
-      this.$router.replace({ name: 'order-detail', query: { info: info } });
+
+      this.$router.replace({ name: 'order-detail', query: { info: JSON.stringify(info) } });
     },
   },
   watch: {

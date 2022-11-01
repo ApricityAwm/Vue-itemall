@@ -30,10 +30,12 @@ import {
   Image,
   ContactCard,
   Tab,
-  Tabs
+  Tabs,
+  Card
 } from 'vant';
 
 [
+  Card,
   Button,
   Swipe,
   SwipeItem,
