@@ -66,11 +66,21 @@
           size="small"
           class="cart-btn"
           v-if="!isEdit"
+          :disabled="selectIds.length === 0"
+          @click="linkOrderDetail"
         >
           去结算
           <div class="btn-tag">{{ selectIds.length }}</div>
         </van-button>
-        <van-button color="red" round size="small" class="cart-btn" v-else @click="deleteCarts">
+        <van-button
+          color="red"
+          round
+          size="small"
+          class="cart-btn"
+          v-else
+          @click="deleteCarts"
+          :disabled="selectIds.length === 0"
+        >
           删除
           <div class="btn-tag">{{ selectIds.length }}</div>
         </van-button>
@@ -155,6 +165,14 @@ export default {
       await updateCarts({ id, num: ++num });
 
       this.queryCarts();
+    },
+    /** 跳转至订单详情页 */
+    linkOrderDetail() {
+      // 过滤出购物车中被选中的商品  在通过map方法拿到num和id
+      const info = this.carts
+        .filter((el) => this.selectIds.includes(el.id))
+        .map(({ num, goods }) => ({ num, gid: goods.id }));
+      this.$router.replace({ name: 'order-detail', query: { info: info } });
     },
   },
   watch: {
