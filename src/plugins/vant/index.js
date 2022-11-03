@@ -31,10 +31,14 @@ import {
   ContactCard,
   Tab,
   Tabs,
-  Card
+  Card,
+  Grid,
+  GridItem
 } from 'vant';
 
 [
+  Grid,
+  GridItem,
   Card,
   Button,
   Swipe,

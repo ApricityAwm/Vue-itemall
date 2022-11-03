@@ -174,6 +174,10 @@ export default {
       goodsDetail.shopInfo = JSON.parse(goodsDetail.shopInfo);
       this.goodsDetail = goodsDetail;
       this.isLoading = true;
+
+      // 修改sku中的数据
+      this.sku.price = goodsDetail.itemInfo.lowNowPrice;
+      this.goods.picture = goodsDetail.itemInfo.topImages[0];
     },
     /** 改变轮播图指示器值 */
     handelSwipeChange(index) {
@@ -190,8 +194,9 @@ export default {
       });
     },
     /** 购买 */
-    handelBuy(data) {
-      console.log('立即购买', data);
+    handelBuy({ goodsId, selectedNum }) {
+      const info = [{ num: selectedNum, gid: goodsId }];
+      this.$router.push({ name: 'order-detail', query: { info: JSON.stringify(info) } });
     },
     /** 添加购物车 */
     async handelAddCart({ goodsId, selectedNum }) {

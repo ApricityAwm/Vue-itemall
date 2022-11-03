@@ -26,6 +26,8 @@ export default class {
         }
         // 请求头添加token
         config.headers.Authorization = 'Bearer '+ store.state.token;
+        // 结构页面提示是否加载
+        this.isHideMessage = config.isHideMessage;
         return config;
       },
       (error) => Promise.reject(error),
@@ -48,7 +50,8 @@ export default class {
 
     if(code === 200) {
       // 提示信息
-      return message ?  Toast.success(message) : data;
+      // 双层三元表达式  结构页面提示是否加载
+      return message ? ( !this.isHideMessage ? Toast.success(message): '' ): data;
     }
 
     if(code === 401 || code === 401) {

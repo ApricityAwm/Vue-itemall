@@ -12,7 +12,7 @@ export const addCarts = (data) => {
 
 /** 删除购物车内商品 */
 export const deleteCarts = (data) => {
-  return http.delete({url: '/cart', data});
+  return http.delete({url: '/cart', data, isHideMessage:  true});
 }
 
 /** 修改购物车内商品数量 */

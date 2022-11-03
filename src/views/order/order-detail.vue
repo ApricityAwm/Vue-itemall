@@ -42,25 +42,67 @@
           </template>
         </template>
 
-        <div class="total">实付金额：{{ order.totalPrice.toFixed(2) || total }}</div>
+        <div class="total">实付金额：{{ order.totalPrice || total }}</div>
       </div>
     </div>
     <div class="submit-bar">
       <van-button size="small" round class="btn">联系客服</van-button>
-      <van-button size="small" round class="btn" color="#00bfc0" plain @click="addOrder"
+      <van-button
+        size="small"
+        round
+        class="btn"
+        color="#00bfc0"
+        plain
+        hairline
+        @click="addOrder"
+        v-if="!id"
         >添加订单</van-button
+      >
+      <van-button
+        size="small"
+        round
+        class="btn"
+        color="#00bfc0"
+        plain
+        hairline
+        @click="payOrder"
+        v-if="order.status === 0"
+        >去支付</van-button
+      >
+      <van-button
+        size="small"
+        round
+        class="btn"
+        color="blue"
+        plain
+        hairline
+        @click="cancelOrder"
+        v-if="order.status === 0"
+        >取消订单</van-button
+      >
+      <van-button
+        size="small"
+        round
+        class="btn"
+        color="red"
+        plain
+        hairline
+        @click="delOrder"
+        v-if="order.status === 1 || order.status === 2"
+        >删除订单</van-button
       >
     </div>
   </div>
 </template>
 
 <script>
-import { queryGoodsById, addOrder, queryOrderById } from '@/api';
+import { queryGoodsById, addOrder, queryOrderById, payOrder, cancelOrder, delOrder } from '@/api';
 import NavBar from '@/components/nav-bar';
 export default {
   components: { NavBar },
   data() {
     return {
+      id: '', //订单id
       info: [],
       goodsList: [],
       order: {},
@@ -76,6 +118,7 @@ export default {
       this.info = JSON.parse(info);
     }
     if (id) {
+      this.id = id;
       this.queryOrderById(id);
     }
 
@@ -83,7 +126,7 @@ export default {
   },
   computed: {
     total() {
-      return '￥' + this.goodsList.reduce((prev, el) => prev + el.num * el.price, 0);
+      return '￥' + this.goodsList.reduce((prev, el) => prev + el.num * el.price, 0).toFixed(2);
     },
   },
   methods: {
@@ -108,6 +151,21 @@ export default {
     /** 根据订单id查询 */
     async queryOrderById(id) {
       this.order = await queryOrderById(id);
+    },
+    /** 支付订单 */
+    async payOrder() {
+      await payOrder(this.id);
+      this.$router.replace({ name: 'order' });
+    },
+    /** 取消订单 */
+    async cancelOrder() {
+      await cancelOrder(this.id);
+      this.$router.replace({ name: 'order' });
+    },
+    /** 删除订单 */
+    async delOrder() {
+      await delOrder(this.id);
+      this.$router.replace({ name: 'order' });
     },
   },
 };

@@ -29,7 +29,7 @@
                   <div class="info-right">
                     <div class="info-right-title">{{ cart.goods.title }}</div>
                     <div class="price">
-                      <div class="price-left">￥{{ cart.goods.price }}</div>
+                      <div class="price-left">￥{{ cart.goods.price.toFixed(2) }}</div>
                       <div class="price-right">
                         <button class="btn" @click="handelDeCrement(cart.id, cart.num)">-</button>
                         <span>{{ cart.num }}</span>
@@ -78,7 +78,7 @@
           size="small"
           class="cart-btn"
           v-else
-          @click="deleteCarts"
+          @click="deleteCarts()"
           :disabled="selectIds.length === 0"
         >
           删除
@@ -138,6 +138,7 @@ export default {
     /** 删除购物车内商品 */
     async deleteCarts(id) {
       await deleteCarts({ ids: id || this.selectIds });
+
       this.queryCarts();
       this.selectIds = [];
     },
@@ -167,11 +168,14 @@ export default {
       this.queryCarts();
     },
     /** 跳转至订单详情页 */
-    linkOrderDetail() {
+    async linkOrderDetail() {
       // 过滤出购物车中被选中的商品  在通过map方法拿到num和id
       const info = this.carts
         .filter((el) => this.selectIds.includes(el.id))
         .map(({ num, goods }) => ({ num, gid: goods.id }));
+
+      /** 删除购物车 */
+      await this.deleteCarts();
 
       this.$router.replace({ name: 'order-detail', query: { info: JSON.stringify(info) } });
     },

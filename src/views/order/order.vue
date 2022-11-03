@@ -1,15 +1,17 @@
 <template>
   <div class="order">
-    <nav-bar class="nav-bar">
-      <template #left>
-        <i class="iconfont icon-fanhui" @click="back"></i>
-      </template>
-      <template #center>订单列表</template>
-      <template #right>
-        <i class="iconfont icon-gengduo"></i>
-      </template>
-    </nav-bar>
-    <van-tabs v-model="status" sticky animated color="#00bfc0" @change="queryOrder">
+    <van-sticky>
+      <nav-bar class="nav-bar">
+        <template #left>
+          <i class="iconfont icon-fanhui" @click="back"></i>
+        </template>
+        <template #center>订单列表</template>
+        <template #right>
+          <i class="iconfont icon-gengduo"></i>
+        </template>
+      </nav-bar>
+    </van-sticky>
+    <van-tabs v-model="status" sticky offset-top="44" animated color="#00bfc0" @change="queryOrder">
       <template v-for="tab in tabs">
         <van-tab :title="tab" :key="tab">
           <template v-for="order in orders">
@@ -31,7 +33,7 @@
                   round
                   plain
                   hairline
-                  @click="payOrder(order.id)"
+                  @click.stop="payOrder(order.id)"
                   >去支付</van-button
                 >
                 <van-button
@@ -41,7 +43,7 @@
                   round
                   plain
                   hairline
-                  @click="cancelOrder(order.id)"
+                  @click.stop="cancelOrder(order.id)"
                   >取消</van-button
                 >
                 <van-button
@@ -51,7 +53,7 @@
                   round
                   plain
                   hairline
-                  @click="delOrder(order.id)"
+                  @click.stop="delOrder(order.id)"
                   >删除</van-button
                 >
               </div>
@@ -77,6 +79,7 @@ export default {
   },
   mounted() {
     this.queryOrder();
+    this.status = this.$route.query.status || 0;
   },
   methods: {
     /** 返回 */
@@ -104,6 +107,7 @@ export default {
       await delOrder(id);
       await this.queryOrder();
     },
+    /** 跳转至相关订单详情 */
     async handelLinkOrderDetail(id) {
       this.$router.push({ name: 'order-detail', query: { id } });
     },
